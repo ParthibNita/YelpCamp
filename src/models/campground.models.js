@@ -24,4 +24,15 @@ const campgroundSchema = new Schema({
   ],
 });
 
+// Middleware to delete associated reviews when a campground is deleted
+campgroundSchema.post("findOneAndDelete", async (doc) => {
+  if (doc) {
+    await mongoose.model("Review").deleteMany({
+      _id: {
+        $in: doc.reviews,
+      },
+    });
+  }
+});
+
 export const Campground = mongoose.model("Campground", campgroundSchema);
