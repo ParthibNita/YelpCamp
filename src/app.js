@@ -29,6 +29,11 @@ const sessionConfig = {
 
 app.use(session(sessionConfig)); // Middleware for session management
 app.use(flash()); // Middleware for flash messages
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success"); // Make flash messages available in views
+  res.locals.error = req.flash("error"); // Make error messages available in views
+  next();
+});
 
 app.engine("ejs", engine); // Use ejs-mate for EJS templating
 app.set("view engine", "ejs");
