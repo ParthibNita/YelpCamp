@@ -6,8 +6,10 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const app = express();
 
+app.use(express.static("public")); // Serve static files from the public directory
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
 app.use(methodOverride("_method")); // Middleware to support PUT, PATCH and DELETE methods in forms
