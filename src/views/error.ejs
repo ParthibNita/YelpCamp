@@ -1,0 +1,16 @@
+<% layout('layouts/layout') %>
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="alert alert-danger">
+      <h3 class="alert-heading" role="alert"><%= err.message %></h3>
+      <div class="overflow-auto" style="max-height: 200px">
+        <pre
+          class="p-2 bg-light text-wrap"
+          style="white-space: pre-wrap; word-break: break-word"
+        >
+          <code><%= err.stack %></code>
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
