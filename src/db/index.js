@@ -3,11 +3,7 @@ import mongoose from "mongoose";
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(
-      `${process.env.MONGODB_URI}/YelpCamp`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      `${process.env.MONGODB_URI}/YelpCamp`
     );
     console.log(
       `Database connected successfully. DB Host: ${connectionInstance.connection.host}`
