@@ -1,0 +1,132 @@
+<% layout('layouts/layout') %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="h4 mb-0">
+            <i class="fas fa-edit me-2"></i>Edit Campground
+          </h2>
+        </div>
+
+        <div class="card-body">
+          <form
+            action="/campgrounds/<%= campground._id %>?_method=PUT"
+            method="POST"
+            class="validateForm"
+            novalidate
+          >
+            <!-- Title Field -->
+            <div class="mb-4">
+              <label for="title" class="form-label fw-bold">Title</label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                name="campgrounds[title]"
+                id="title"
+                value="<%= campground.title %>"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">
+                Please provide a title for the campground.
+              </div>
+            </div>
+
+            <!-- Price Field -->
+            <div class="mb-4">
+              <label for="price" class="form-label fw-bold">Price</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  type="number"
+                  class="form-control form-control-lg"
+                  name="campgrounds[price]"
+                  id="price"
+                  value="<%= campground.price %>"
+                  min="1"
+                  step="1"
+                  required
+                />
+                <div class="valid-feedback">Damn very reasonable!</div>
+                <div class="invalid-feedback">Please enter a valid price.</div>
+              </div>
+            </div>
+
+            <!-- Location Field -->
+            <div class="mb-4">
+              <label for="location" class="form-label fw-bold">Location</label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                name="campgrounds[location]"
+                id="location"
+                value="<%= campground.location %>"
+                required
+              />
+              <div class="valid-feedback">Location is set!</div>
+              <div class="invalid-feedback">
+                Please provide a location for the campground.
+              </div>
+            </div>
+
+            <!-- Image URL Field  -->
+            <div class="mb-4">
+              <label for="image" class="form-label fw-bold">Image URL</label>
+              <input
+                type="url"
+                class="form-control form-control-lg"
+                name="campgrounds[image]"
+                id="image"
+                value="<%= campground.image %>"
+                required
+              />
+              <div class="valid-feedback">Image URL is set!</div>
+              <div class="invalid-feedback">
+                Please provide a valid image URL.
+              </div>
+              <div class="mt-2">
+                <img
+                  src="<%= campground.image %>"
+                  class="img-thumbnail"
+                  style="max-height: 200px"
+                />
+              </div>
+            </div>
+
+            <!-- Description Field (added if your model has it) -->
+            <% if (campground.description) { %>
+            <div class="mb-4">
+              <label for="description" class="form-label fw-bold"
+                >Description</label
+              >
+              <textarea
+                class="form-control"
+                name="campgrounds[description]"
+                id="description"
+                rows="4"
+              >
+              <%= campground.description %>
+                </textarea
+              >
+            </div>
+            <% } %>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between mt-4">
+              <a
+                href="/campgrounds/<%= campground._id %>"
+                class="btn btn-outline-secondary"
+              >
+                <i class="fas fa-times me-2"></i>Cancel
+              </a>
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="fas fa-save me-2"></i>Update Campground
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
