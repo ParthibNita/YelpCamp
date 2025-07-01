@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
+import passport from "passport";
 
 const router = Router();
 
 router.route("/register").get((_, res) => {
   res.render("users/register");
 });
-
 router.route("/register").post(
   asyncHandler(async (req, res) => {
     try {
@@ -27,6 +27,20 @@ router.route("/register").post(
       req.flash("error", error.message);
       res.redirect("/users/register");
     }
+  })
+);
+
+router.route("/login").get((_, res) => {
+  res.render("users/login");
+});
+router.route("/login").post(
+  passport.authenticate("local", {
+    failureFlash: true,
+    failureRedirect: "/users/login",
+  }),
+  asyncHandler(async (req, res) => {
+    req.flash("success", `Welcome back! <strong>${req.user.username}</strong>`);
+    res.redirect("/campgrounds");
   })
 );
 
