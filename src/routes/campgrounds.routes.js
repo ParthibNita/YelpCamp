@@ -30,7 +30,8 @@ router.route("/").post(
       description,
     });
     await campground.save();
-    res.redirect("/campgrounds");
+    req.flash("success", "Campground created successfully!");
+    res.redirect(`/campgrounds/${campground._id}`);
     //   res.send(req.body);
   })
 );
@@ -38,14 +39,16 @@ router.route("/").post(
 router.route("/:id").get(
   asyncHandler(async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return next();
+      req.flash("error", "Invalid Campground ID");
+      return res.redirect("/campgrounds");
     }
     const campground = await Campground.findById(req.params.id).populate(
       "reviews"
     );
     // console.log(campground);
     if (!campground) {
-      throw new ApiError(404, "Campground Not Found");
+      req.flash("error", "Oops! Campground doesn't exist");
+      return res.redirect("/campgrounds");
     }
     res.render("campgrounds/show", { campground });
   })
@@ -54,11 +57,13 @@ router.route("/:id").get(
 router.route("/:id/edit").get(
   asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      throw new ApiError(404, "Invalid ID ");
+      req.flash("error", "Invalid Campground ID");
+      return res.redirect("/campgrounds");
     }
     const campground = await Campground.findById(req.params.id);
     if (!campground) {
-      throw new ApiError(404, "Campground Not Found");
+      req.flash("error", "Sorry! Campground doesn't exist");
+      return res.redirect("/campgrounds");
     }
     res.render("campgrounds/edit", { campground });
   })
@@ -81,6 +86,7 @@ router.route("/:id").put(
       },
       { new: true, runValidators: true }
     );
+    req.flash("success", "Successfully edited campground!");
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
@@ -88,6 +94,7 @@ router.route("/:id").put(
 router.route("/:id").delete(
   asyncHandler(async (req, res) => {
     await Campground.findByIdAndDelete(req.params.id);
+    req.flash("success", "Campground deleted successfully!");
     res.redirect("/campgrounds");
   })
 );
