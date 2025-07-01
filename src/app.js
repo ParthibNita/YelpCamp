@@ -1,10 +1,13 @@
 import express from "express";
+import passport from "passport";
+import Localstrategy from "passport-local";
 import session from "express-session";
 import flash from "connect-flash";
 import path from "path";
 import methodOverride from "method-override";
 import engine from "ejs-mate";
 import { fileURLToPath } from "url";
+import { User } from "./models/user.models.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +37,12 @@ app.use((req, res, next) => {
   res.locals.error = req.flash("error"); // Make error messages available in views
   next();
 });
+
+app.use(passport.initialize());
+app.use(passport.session()); // make sure to initialize session before passport
+passport.use(new Localstrategy(User.authenticate())); // Use LocalStrategy for authentication
+passport.serializeUser(User.serializeUser()); // Serialize user for session
+passport.deserializeUser(User.deserializeUser()); // Deserialize user from session
 
 app.engine("ejs", engine); // Use ejs-mate for EJS templating
 app.set("view engine", "ejs");
