@@ -12,6 +12,10 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
+// User routes
+import userRoutes from "./routes/users.routes.js";
+app.use("/users", userRoutes);
+
 // Campgrounds routes
 import campgroundRoutes from "./routes/campgrounds.routes.js";
 app.use("/campgrounds", campgroundRoutes);
@@ -21,12 +25,12 @@ import reviewRoutes from "./routes/reviews.routes.js";
 app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 // Error handling for undefined routes
-app.all("*all", (req, res, next) => {
+app.all("*all", (_, __, next) => {
   next(new ApiError(404, "Page Not Found"));
 });
 
 //error middleware
-app.use((err, req, res, next) => {
+app.use((err, _, res, __) => {
   const { statusCode = 500 } = err;
   res.status(statusCode).render("error", { err });
 });
