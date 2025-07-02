@@ -2,6 +2,7 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 import passport from "passport";
+import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -43,5 +44,15 @@ router.route("/login").post(
     res.redirect("/campgrounds");
   })
 );
+
+router.route("/logout").get(isLoggedIn, (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "You are logged out");
+    res.redirect("/campgrounds");
+  });
+});
 
 export default router;
