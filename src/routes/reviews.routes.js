@@ -4,10 +4,12 @@ import { ApiError } from "../utils/ApiError.js";
 import { Campground } from "../models/campground.models.js";
 import { Review } from "../models/reviews.models.js";
 import { validateReview } from "../middlewares/validate.middleware.js";
+import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
 const router = Router({ mergeParams: true });
 
 router.route("/").post(
+  isLoggedIn,
   validateReview,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -25,6 +27,7 @@ router.route("/").post(
 );
 
 router.route("/:reviewId").delete(
+  isLoggedIn,
   asyncHandler(async (req, res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, {
