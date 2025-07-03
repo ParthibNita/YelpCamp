@@ -10,7 +10,7 @@ router.route("/register").get((_, res) => {
   res.render("users/register");
 });
 router.route("/register").post(
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req, res, next) => {
     try {
       const { username, email, password } = req.body;
       // Create new user
@@ -19,11 +19,14 @@ router.route("/register").post(
         email,
       });
       const registeredUser = await User.register(user, password);
-      req.flash(
-        "success",
-        `Hello <strong>${registeredUser.username}</strong>. Welcome to YelpCamp!`
-      );
-      res.redirect("/campgrounds");
+      req.login(registeredUser, (err) => {
+        if (err) return next(err);
+        req.flash(
+          "success",
+          `Hello <strong>${registeredUser.username}</strong>. Welcome to YelpCamp!`
+        );
+        res.redirect("/campgrounds");
+      });
     } catch (error) {
       req.flash("error", error.message);
       res.redirect("/users/register");
