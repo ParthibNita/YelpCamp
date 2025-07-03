@@ -15,4 +15,16 @@ const redirectRoute = (req, res, next) => {
   next();
 };
 
-export { isLoggedIn, redirectRoute };
+const isAuthor = (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  console.log(req.user._id);
+
+  if (!req.user._id.equals(id)) {
+    req.flash("error", "You don't have permission to do that!");
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+};
+
+export { isLoggedIn, redirectRoute, isAuthor };
