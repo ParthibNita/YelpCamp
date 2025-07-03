@@ -2,7 +2,7 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 import passport from "passport";
-import { isLoggedIn } from "../middlewares/auth.middleware.js";
+import { isLoggedIn, redirectRoute } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -38,13 +38,15 @@ router.route("/login").get((_, res) => {
   res.render("users/login");
 });
 router.route("/login").post(
+  redirectRoute,
   passport.authenticate("local", {
     failureFlash: true,
     failureRedirect: "/users/login",
   }),
   asyncHandler(async (req, res) => {
     req.flash("success", `Welcome back! <strong>${req.user.username}</strong>`);
-    res.redirect("/campgrounds");
+    const redirectUrl = res.locals.returnTo || "/campgrounds";
+    res.redirect(redirectUrl);
   })
 );
 
