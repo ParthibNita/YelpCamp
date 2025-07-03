@@ -31,18 +31,20 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig)); // Middleware for session management
-app.use(flash()); // Middleware for flash messages
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success"); // Make flash messages available in views
-  res.locals.error = req.flash("error"); // Make error messages available in views
-  next();
-});
 
 app.use(passport.initialize());
 app.use(passport.session()); // make sure to initialize session before passport
 passport.use(new Localstrategy(User.authenticate())); // Use LocalStrategy for authentication
 passport.serializeUser(User.serializeUser()); // Serialize user for session
 passport.deserializeUser(User.deserializeUser()); // Deserialize user from session
+
+app.use(flash()); // Middleware for flash messages
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user; // make sure to trigger this after passport initialization
+  res.locals.success = req.flash("success"); // Make flash messages available in views
+  res.locals.error = req.flash("error"); // Make error messages available in views
+  next();
+});
 
 app.engine("ejs", engine); // Use ejs-mate for EJS templating
 app.set("view engine", "ejs");
