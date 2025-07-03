@@ -3,7 +3,7 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Campground } from "../models/campground.models.js";
 import { validateCampground } from "../middlewares/validate.middleware.js";
-import { isLoggedIn } from "../middlewares/auth.middleware.js";
+import { isAuthor, isLoggedIn } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -29,6 +29,7 @@ router.route("/").post(
       location,
       image,
       description,
+      author: req.user._id,
     });
     await campground.save();
     req.flash("success", "Campground created successfully!");
@@ -43,9 +44,14 @@ router.route("/:id").get(
       req.flash("error", "Invalid Campground ID");
       return res.redirect("/campgrounds");
     }
-    const campground = await Campground.findById(req.params.id).populate(
-      "reviews"
-    );
+    const campground = await Campground.findById(req.params.id)
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate("author");
     // console.log(campground);
     if (!campground) {
       req.flash("error", "Oops! Campground doesn't exist");
@@ -57,6 +63,7 @@ router.route("/:id").get(
 
 router.route("/:id/edit").get(
   isLoggedIn,
+  isAuthor,
   asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       req.flash("error", "Invalid Campground ID");
@@ -72,6 +79,8 @@ router.route("/:id/edit").get(
 );
 
 router.route("/:id").put(
+  isLoggedIn,
+  isAuthor,
   validateCampground,
   asyncHandler(async (req, res) => {
     const { title, price, location, image, description } = req.body.campgrounds;
@@ -95,6 +104,7 @@ router.route("/:id").put(
 
 router.route("/:id").delete(
   isLoggedIn,
+  isAuthor,
   asyncHandler(async (req, res) => {
     await Campground.findByIdAndDelete(req.params.id);
     req.flash("success", "Campground deleted successfully!");
