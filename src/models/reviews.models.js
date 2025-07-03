@@ -11,6 +11,10 @@ const reviewSchema = new Schema({
     type: String,
     required: true,
   },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 export const Review = mongoose.model("Review", reviewSchema);
