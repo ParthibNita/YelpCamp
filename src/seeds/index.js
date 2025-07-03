@@ -3,15 +3,12 @@ import { Campground } from "../models/campground.models.js";
 import cities from "./cities.js";
 import prices from "./prices.js";
 import descriptors, { places } from "./places.js";
+import { Review } from "../models/reviews.models.js";
 
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(
-      "mongodb://localhost:27017/YelpCamp",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      "mongodb://localhost:27017/YelpCamp"
     );
     console.log(
       `Database connected successfully. DB Host: ${connectionInstance.connection.host}`
@@ -25,9 +22,11 @@ const random = (array) => array[Math.floor(Math.random() * array.length)];
 
 connectDB()
   .then(async () => {
+    await Review.deleteMany({});
     await Campground.deleteMany({}); // Clear existing campgrounds
     for (let i = 0; i < 50; i++) {
       const camp = new Campground({
+        author: "6866ae912c668336b3334ac0",
         title: `${random(cities).city} , ${random(cities).state}`,
         price: `${random(prices)}`,
         location: `${random(descriptors)} ${random(places)}`,
