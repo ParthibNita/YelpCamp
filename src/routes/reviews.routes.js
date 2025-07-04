@@ -17,7 +17,7 @@ router.route("/").post(
     if (!campground) {
       throw new ApiError(404, "Campground Not Found");
     }
-    const review = new Review(req.body.reviews);
+    const review = new Review({ ...req.body.reviews, author: req.user._id });
     campground.reviews.push(review);
     await review.save();
     await campground.save();
