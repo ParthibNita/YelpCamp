@@ -1,3 +1,5 @@
+import { Review } from "../models/reviews.models.js";
+
 const isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl;
@@ -17,8 +19,6 @@ const redirectRoute = (req, res, next) => {
 
 const isAuthor = (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
-  console.log(req.user._id);
 
   if (!req.user._id.equals(id)) {
     req.flash("error", "You don't have permission to do that!");
@@ -27,4 +27,15 @@ const isAuthor = (req, res, next) => {
   next();
 };
 
-export { isLoggedIn, redirectRoute, isAuthor };
+const isReviewAuthor = async (req, res, next) => {
+  const { id, reviewId } = req.params;
+
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user._id)) {
+    req.flash("error", "You don't have permission to do that!");
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+};
+
+export { isLoggedIn, redirectRoute, isAuthor, isReviewAuthor };
