@@ -117,14 +117,16 @@
               <h3 class="card-title">Rating: <%= rating %></h5>
               <small class="card-author text-secondary">by <strong><%= author.username %></strong></small>
               <p class="card-text fw-bold"><%= body %></p>
+              <% if(currentUser && author.equals(currentUser._id)){ %>
               <form
                 action="/campgrounds/<%= campground._id %>/reviews/<%= _id %>?_method=DELETE"
                 method="POST"
               >
                 <button type="submit" class="btn btn-danger ">
-                  <i class="fas fa-trash"></i> Del
+                  <i class="fas fa-trash"></i> Delete
                 </button>
               </form>
+              <% } %>
             </div>
           </div>
           <%}) %>
