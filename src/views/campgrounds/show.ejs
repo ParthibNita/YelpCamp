@@ -1,4 +1,5 @@
 <% layout('layouts/layout') %>
+<link rel="stylesheet" href="/css/stars.css">
 <div class="container mt-5">
   <div class="row">
     <div class="col-lg-5 mx-auto">
@@ -62,7 +63,7 @@
     </div>
     <div class="col-lg-7 mx-auto">
       <!-- Reviews Section -->
-      <h1 class="mb-4">Leave a Review</h1>
+      <h1 class="mb-2">Leave a Review</h1>
       <% if(currentUser) { %>
       <form 
         action="/campgrounds/<%= campground._id %>/reviews" 
@@ -70,23 +71,21 @@
         class="validateForm" 
         novalidate
       >
+        <fieldset class="starability-growRotate">
+          <input type="radio" id="no-rate" class="input-no-rate" name="reviews[rating]" value="1" checked aria-label="No rating." />
+          <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="reviews[rating]" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
         <div class="mb-3">
-          <label for="rating" class="form-label">Example range</label>
-          <input
-            type="range"
-            class="form-range"
-            id="rating"
-            name="reviews[rating]"
-            min="1"
-            max="5"
-            required
-          />
-          <div class="invalid-feedback">
-            Please provide a rating between 1 and 5.
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="body" class="form-label">Describe</label>
+          <h4><label for="body" class="form-label">Describe</label></h4>
           <textarea
             name="reviews[body]"
             class="form-control"
@@ -114,9 +113,12 @@
           <% campground.reviews.forEach(({body,rating,_id,author}) => { %>
           <div class="card mb-3">
             <div class="card-body">
-              <h3 class="card-title">Rating: <%= rating %></h5>
+              <!-- <h4 class="card-title">Rating: <%= rating %></h5> -->
+              <p class="starability-result mb-0" data-rating=<%= rating %>>
+                Rated: <%= rating %> stars
+              </p>
               <small class="card-author text-secondary">by <strong><%= author.username %></strong></small>
-              <p class="card-text fw-bold"><%= body %></p>
+              <h5 class="card-text fw-bold"><%= body %></h5>
               <% if(currentUser && author.equals(currentUser._id)){ %>
               <form
                 action="/campgrounds/<%= campground._id %>/reviews/<%= _id %>?_method=DELETE"
