@@ -9,24 +9,28 @@ import {
 
 const router = Router();
 
-router.route("/register").get((_, res) => {
-  res.render("users/register");
-});
+router
+  .route("/register")
+  .get((_, res) => {
+    res.render("users/register");
+  })
+  .post(registerUser);
 
-router.route("/register").post(registerUser);
+// router.route("/register").post(registerUser);
 
-router.route("/login").get((_, res) => {
-  res.render("users/login");
-});
-
-router.route("/login").post(
-  redirectRoute,
-  passport.authenticate("local", {
-    failureFlash: true,
-    failureRedirect: "/users/login",
-  }),
-  loginUser
-);
+router
+  .route("/login")
+  .get((_, res) => {
+    res.render("users/login");
+  })
+  .post(
+    redirectRoute,
+    passport.authenticate("local", {
+      failureFlash: true,
+      failureRedirect: "/users/login",
+    }),
+    loginUser
+  );
 
 router.route("/logout").get(isLoggedIn, logoutUser);
 

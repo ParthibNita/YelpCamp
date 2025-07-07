@@ -13,20 +13,22 @@ import {
 
 const router = Router();
 
-router.route("/").get(getAllCampgrounds);
+router
+  .route("/")
+  .get(getAllCampgrounds)
+  .post(isLoggedIn, validateCampground, createNewCampground);
 
 router.route("/new").get(isLoggedIn, getNewCampground);
 
-router.route("/").post(isLoggedIn, validateCampground, createNewCampground);
-
-router.route("/:id").get(viewCampground);
+router
+  .route("/:id")
+  .get(viewCampground)
+  .delete(isLoggedIn, isAuthor, deleteCampground);
 
 router.route("/:id/edit").get(isLoggedIn, isAuthor, getEditCampground);
 
 router
   .route("/:id")
   .put(isLoggedIn, isAuthor, validateCampground, postEditCampground);
-
-router.route("/:id").delete(isLoggedIn, isAuthor, deleteCampground);
 
 export default router;

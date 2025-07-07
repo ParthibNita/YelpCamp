@@ -7,6 +7,11 @@ const router = Router({ mergeParams: true });
 
 router.route("/").post(isLoggedIn, validateReview, postReview);
 
-router.route("/:reviewId").delete(isLoggedIn, isReviewAuthor, deleteReview);
+router
+  .route("/:reviewId")
+  .get(isLoggedIn, isReviewAuthor, (req, res) => {
+    res.redirect(`/campgrounds/${req.params.id}`);
+  })
+  .delete(isLoggedIn, isReviewAuthor, deleteReview);
 
 export default router;
