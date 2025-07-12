@@ -30,7 +30,11 @@ app.all("*all", (_, __, next) => {
 });
 
 //error middleware
-app.use((err, _, res, __) => {
+app.use((err, req, res, __) => {
+  if (err.message === "Invalid_File_Type") {
+    req.flash("error", "Invalid File Type");
+    return res.redirect("/campgrounds/new");
+  }
   const { statusCode = 500 } = err;
   res.status(statusCode).render("error", { err });
 });
