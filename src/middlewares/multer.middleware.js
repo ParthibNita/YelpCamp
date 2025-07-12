@@ -1,4 +1,5 @@
 import multer from "multer";
+import { ApiError } from "../utils/ApiError.js";
 
 const storage = multer.diskStorage({
   destination: function (_, __, cb) {
@@ -6,10 +7,18 @@ const storage = multer.diskStorage({
   },
   filename: function (_, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
+    cb(null, `${file.originalname}-${uniqueSuffix}`);
   },
 });
 
 export const upload = multer({
-  storage: storage,
+  storage,
+  fileFilter: (_, file, cb) => {
+    const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (allowedFileTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new ApiError(400, "Invalid_File_Type"), false);
+    }
+  },
 });
