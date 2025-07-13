@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Campground } from "../models/campground.models.js";
+import { uploadFileOnCloudinary } from "../utils/cloudinary.js";
 
 const getAllCampgrounds = asyncHandler(async (_, res) => {
   const campgrounds = await Campground.find({});
@@ -12,18 +13,28 @@ const getNewCampground = (_, res) => {
 };
 
 const createNewCampground = asyncHandler(async (req, res) => {
-  const { title, price, location, description, image } = req.body.campgrounds;
+  const { title, price, location, description } = req.body.campgrounds;
+  // console.log(req.files);
+  const uploadedImages = await Promise.all(
+    req.files?.map(async (file) => await uploadFileOnCloudinary(file.path))
+  );
+  // console.log(uploadedImages);
+
   const campground = new Campground({
     title,
     price,
     location,
-    image,
+    images: uploadedImages.map((file) => ({
+      url: file.secure_url,
+      filename: file.public_id,
+    })),
     description,
     author: req.user._id,
   });
   await campground.save();
   req.flash("success", "Campground created successfully!");
   res.redirect(`/campgrounds/${campground._id}`);
+  // res.send("Done");
 });
 
 const viewCampground = asyncHandler(async (req, res) => {
