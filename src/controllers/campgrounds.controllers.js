@@ -64,7 +64,14 @@ const getEditCampground = asyncHandler(async (req, res) => {
 });
 
 const postEditCampground = asyncHandler(async (req, res) => {
-  const { title, price, location, image, description } = req.body.campgrounds;
+  const { title, price, location, description } = req.body.campgrounds;
+  const uploadedImages = await Promise.all(
+    req.files?.map(async (file) => await uploadFileOnCloudinary(file.path))
+  );
+  const newImages = uploadedImages.map((file) => ({
+    url: file.secure_url,
+    filename: file.public_id,
+  }));
   const campground = await Campground.findByIdAndUpdate(
     req.params.id,
     {
@@ -72,8 +79,12 @@ const postEditCampground = asyncHandler(async (req, res) => {
         title,
         price,
         location,
-        image,
         description,
+      },
+      $push: {
+        images: {
+          $each: newImages,
+        },
       },
     },
     { new: true, runValidators: true }
