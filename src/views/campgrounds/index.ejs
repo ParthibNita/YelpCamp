@@ -6,14 +6,14 @@
 </div>
 
 <div class="row">
-    <% campgrounds.forEach(({_id, title, description, location, image}) => { %>
+    <% campgrounds.forEach(({_id, title, description, location, images}) => { %>
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="row g-0 h-100">
                     <!-- Image on left -->
                     <div class="col-md-5">
                         <img 
-                            src="<%= image %>" 
+                            src="<%= images[0].url %>" 
                             class="img-fluid rounded-start h-100" 
                             style="object-fit: cover;"
                             alt="<%= title %>"
