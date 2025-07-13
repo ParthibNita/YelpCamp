@@ -15,6 +15,7 @@
             method="POST"
             class="validateForm"
             novalidate
+            enctype="multipart/form-data"
           >
             <!-- Title Field -->
             <div class="mb-4">
@@ -72,24 +73,17 @@
 
             <!-- Image URL Field  -->
             <div class="mb-4">
-              <label for="image" class="form-label fw-bold">Image URL</label>
-              <input
-                type="url"
-                class="form-control form-control-lg"
-                name="campgrounds[image]"
-                id="image"
-                value="<%= campground.image %>"
-                required
-              />
-              <div class="valid-feedback">Image URL is set!</div>
-              <div class="invalid-feedback">
-                Please provide a valid image URL.
-              </div>
-              <div class="mt-2">
-                <img
-                  src="<%= campground.image %>"
-                  class="img-thumbnail"
-                  style="max-height: 200px"
+              <label class="form-label fw-bold">
+                <i class="fas fa-images me-2"></i> Add more Images
+              </label>
+              <div class="file-input-wrapper border rounded p-3 text-center">
+                <i class="fas fa-cloud-upload-alt text-muted mb-3"></i>
+                <input
+                  type="file"
+                  name="campgrounds[image]"
+                  accept="image/*"
+                  multiple
+                  required
                 />
               </div>
             </div>
