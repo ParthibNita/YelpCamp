@@ -36,14 +36,15 @@
           <div class="row">
             <div class="col-md-5">
               <p class="h5">
-                <i class="fas fa-dollar-sign text-success me-2"></i>
-                <strong>Price:</strong> $<%= campground.price %>/night
+                <strong>Price:</strong> 
+                <i class="fas fa-dollar-sign text-dark "></i>
+                <%= campground.price %>/night
               </p>
             </div>
             <div class="col-md-7">
               <p class="h5">
-                <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                <strong>Location:</strong> <%= campground.location %>
+                <i class="fas fa-map-marker-alt text-info"></i>
+                <strong>Location :</strong> <%= campground.location %>
               </p>
             </div>
           </div>
@@ -83,7 +84,7 @@
     </div>
     <div class="col-lg-7 mx-auto">
       <!-- Reviews Section -->
-      <h1 class="mb-2">Leave a Review</h1>
+      <h1 class="mb-2">Rate Your Experience</h1>
       <% if(currentUser) { %>
       <form 
         action="/campgrounds/<%= campground._id %>/reviews" 
@@ -105,7 +106,7 @@
           <label for="first-rate5" title="Amazing">5 stars</label>
         </fieldset>
         <div class="mb-3">
-          <h4><label for="body" class="form-label">Describe</label></h4>
+          <h4><label for="body" class="form-label">Describe your experience</label></h4>
           <textarea
             name="reviews[body]"
             class="form-control"
