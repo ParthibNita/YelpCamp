@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Campground } from "../models/campground.models.js";
-import { uploadFileOnCloudinary } from "../utils/cloudinary.js";
+import {
+  uploadFileOnCloudinary,
+  deleteFileOnCloudinary,
+} from "../utils/cloudinary.js";
 
 const getAllCampgrounds = asyncHandler(async (_, res) => {
   const campgrounds = await Campground.find({});
   res.render("campgrounds/index", { campgrounds });
 });
 
-const getNewCampground = (_, res) => {
+const getNewCampground = (req, res) => {
+  req.session.returnTo = req.originalUrl;
   res.render("campgrounds/create");
 };
 
@@ -59,6 +63,7 @@ const viewCampground = asyncHandler(async (req, res) => {
 });
 
 const getEditCampground = asyncHandler(async (req, res) => {
+  req.session.returnTo = req.originalUrl;
   const campground = await Campground.findById(req.params.id);
   res.render("campgrounds/edit", { campground });
 });
@@ -89,6 +94,16 @@ const postEditCampground = asyncHandler(async (req, res) => {
     },
     { new: true, runValidators: true }
   );
+  console.log(req.body.deletedImages);
+  if (req.body.deletedImages) {
+    req.body.deletedImages.forEach(async (filename) => {
+      await deleteFileOnCloudinary(filename);
+    });
+    await campground.updateOne({
+      $pull: { images: { filename: { $in: req.body.deletedImages } } },
+    });
+  }
+
   req.flash("success", "Successfully edited campground!");
   res.redirect(`/campgrounds/${campground._id}`);
 });
