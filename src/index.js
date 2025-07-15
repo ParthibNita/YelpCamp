@@ -8,7 +8,7 @@ dotenv.config({
 }); // Load environment variables from .env file
 
 //Routes
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.render("home");
 });
 
@@ -33,7 +33,15 @@ app.all("*all", (_, __, next) => {
 app.use((err, req, res, __) => {
   if (err.message === "Invalid_File_Type") {
     req.flash("error", "Invalid File Type");
-    return res.redirect("/campgrounds/new");
+    return res.redirect(req.session.returnTo);
+  }
+  if (err.message === "File too large") {
+    req.flash("error", "File should be less than 5MB");
+    return res.redirect(req.session.returnTo);
+  }
+  if (err.message === "Unexpected field") {
+    req.flash("error", "You cannot upload more than the specified limit");
+    return res.redirect(req.session.returnTo);
   }
   const { statusCode = 500 } = err;
   res.status(statusCode).render("error", { err });
