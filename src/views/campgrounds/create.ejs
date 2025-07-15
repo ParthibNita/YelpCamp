@@ -1,5 +1,5 @@
 <% layout('layouts/layout') %>
-<div class="container py-5">
+<div class="container py-5 fs-5">
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10">
       <div class="card shadow">
@@ -70,7 +70,10 @@
             <!-- Image URL Field -->
             <div class="mb-4">
               <label class="form-label fw-bold">
-                <i class="fas fa-images me-2"></i> Upload Images
+                <i class="fas fa-images"></i> Upload Images
+                <small class="text-muted">
+                  (You can upload atmost 4 images)
+                </small>
               </label>
               <div class="file-input-wrapper border rounded p-3 text-center">
                 <i class="fas fa-cloud-upload-alt text-muted mb-3"></i>
@@ -81,10 +84,11 @@
                   multiple
                   required
                 />
+                <div class="invalid-feedback">No image uploaded.</div>
               </div>
             </div>
 
-            <!-- Description Field (added for better UX) -->
+            <!-- Description Field -->
             <div class="mb-4">
               <label for="description" class="form-label fw-bold"
                 >Description</label
