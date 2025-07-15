@@ -5,7 +5,12 @@ import { deleteReview, postReview } from "../controllers/reviews.controller.js";
 
 const router = Router({ mergeParams: true });
 
-router.route("/").post(isLoggedIn, validateReview, postReview);
+router
+  .route("/")
+  .get(isLoggedIn, validateReview, (req, res) => {
+    res.redirect(`/campgrounds/${req.params.id}`);
+  })
+  .post(isLoggedIn, validateReview, postReview);
 
 router
   .route("/:reviewId")
