@@ -1,5 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
+const imageSchema = new Schema({
+  url: String,
+  filename: String,
+});
+
+imageSchema.virtual("thumbnail").get(function () {
+  return this.url.replace("/upload", "/upload/w_100");
+});
+
 const campgroundSchema = new Schema({
   title: {
     type: String,
@@ -10,12 +19,7 @@ const campgroundSchema = new Schema({
   location: {
     type: String,
   },
-  images: [
-    {
-      url: String,
-      filename: String,
-    },
-  ],
+  images: [imageSchema],
   description: {
     type: String,
   },
