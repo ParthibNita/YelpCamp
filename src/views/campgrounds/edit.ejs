@@ -1,5 +1,5 @@
 <% layout('layouts/layout') %>
-<div class="container py-5">
+<div class="container py-5 fs-5">
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10">
       <div class="card shadow">
@@ -74,22 +74,52 @@
             <!-- Image URL Field  -->
             <div class="mb-4">
               <label class="form-label fw-bold">
-                <i class="fas fa-images me-2"></i> Add more Images
+                <i class="fas fa-images"></i> Current Images
+                <small class="text-muted">(If you want to delete any image select it)</small>
               </label>
-              <div class="file-input-wrapper border rounded p-3 text-center">
-                <i class="fas fa-cloud-upload-alt text-muted mb-3"></i>
-                <input
-                  type="file"
-                  name="campgrounds[image]"
-                  accept="image/*"
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <% campground.images.forEach((image, index) => { %>
+                  <div class="position-relative">
+                    <label for="delete-image-<%= index %>">
+                      <img
+                        src="<%= image.thumbnail %>"
+                        class="img-thumbnail p-0"
+                        alt="Campground image <%= index + 1 %>"
+                      >
+                    </label>
+                    <div class="position-absolute top-0 end-0 p-1">
+                      <input 
+                        type="checkbox" 
+                        id="delete-image-<%= index %>" 
+                        name="deletedImages[]" 
+                        value="<%= image.filename %>"
+                        autocomplete="off"
+                      >
+                    </div>
+                  </div>
+                <% }); %>
+              </div>
+              <label class="form-label fw-bold" for="image">
+                <i class="fas fa-plus-circle"></i> Add More Images
+                <small class="text-muted">
+                  (You can upload <%= 4-campground.images.length %> more images)
+                </small>
+              </label>
+              <div class="border rounded p-3 text-center bg-light">
+                <i class="fas fa-cloud-upload-alt fs-1 text-muted "></i>
+                <p class="text-muted">Drag & drop images here or click to browse</p>
+                <input 
+                  type="file" 
+                  name="campgrounds[image]" 
+                  accept="image/*" 
                   multiple
-                  required
-                />
+                  class="d-block mx-auto" 
+                  id="image"
+                >
               </div>
             </div>
 
-            <!-- Description Field (added if your model has it) -->
-            <% if (campground.description) { %>
+            <!-- Description Field  -->
             <div class="mb-4">
               <label for="description" class="form-label fw-bold"
                 >Description</label
@@ -100,11 +130,10 @@
                 id="description"
                 rows="4"
               >
-              <%= campground.description %>
+              <%= campground.description.trim() %>
                 </textarea
               >
             </div>
-            <% } %>
 
             <!-- Form Actions -->
             <div class="d-flex justify-content-between mt-4">
