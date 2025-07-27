@@ -6,9 +6,18 @@ import {
   deleteFileOnCloudinary,
 } from "../utils/cloudinary.js";
 
-const getAllCampgrounds = asyncHandler(async (_, res) => {
-  const campgrounds = await Campground.find({});
-  res.render("campgrounds/index", { campgrounds });
+const getAllCampgrounds = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+  const totalCampgrounds = await Campground.countDocuments();
+  const totalPages = Math.ceil(totalCampgrounds / limit);
+  const campgrounds = await Campground.find({}).skip(skip).limit(limit);
+  res.render("campgrounds/index", {
+    campgrounds,
+    currentPage: page,
+    totalPages,
+  });
 });
 
 const getNewCampground = (req, res) => {
