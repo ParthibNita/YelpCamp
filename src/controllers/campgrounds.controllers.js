@@ -5,6 +5,7 @@ import {
   uploadFileOnCloudinary,
   deleteFileOnCloudinary,
 } from "../utils/cloudinary.js";
+import { Review } from "../models/reviews.models.js";
 
 const getAllCampgrounds = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -55,20 +56,32 @@ const viewCampground = asyncHandler(async (req, res) => {
     req.flash("error", "Invalid Campground ID");
     return res.redirect("/campgrounds");
   }
-  const campground = await Campground.findById(req.params.id)
-    .populate({
-      path: "reviews",
-      populate: {
-        path: "author",
-      },
-    })
-    .populate("author");
-  // console.log(campground);
+  const campground = await Campground.findById(req.params.id).populate(
+    "author"
+  );
   if (!campground) {
     req.flash("error", "Oops! Campground doesn't exist");
     return res.redirect("/campgrounds");
   }
-  res.render("campgrounds/show", { campground });
+
+  const reviewPage = parseInt(req.query.reviewPage) || 1;
+  const limit = 4;
+  const skip = (reviewPage - 1) * limit;
+  const totalReviews = await Review.countDocuments({
+    _id: { $in: campground.reviews },
+  });
+  const totalPages = Math.ceil(totalReviews / limit);
+  const reviews = await Review.find({ _id: { $in: campground.reviews } })
+    .skip(skip)
+    .limit(limit)
+    .populate("author");
+  console.log(campground);
+  res.render("campgrounds/show", {
+    campground,
+    reviews,
+    currentPage: reviewPage,
+    totalPages,
+  });
 });
 
 const getEditCampground = asyncHandler(async (req, res) => {
