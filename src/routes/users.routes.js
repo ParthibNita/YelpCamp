@@ -5,6 +5,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  userProfile,
 } from "../controllers/users.controller.js";
 
 const router = Router();
@@ -33,5 +34,7 @@ router
   );
 
 router.route("/logout").get(isLoggedIn, logoutUser);
+
+router.route("/profile/:username").get(isLoggedIn, redirectRoute, userProfile);
 
 export default router;

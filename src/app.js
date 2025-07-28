@@ -8,6 +8,7 @@ import methodOverride from "method-override";
 import engine from "ejs-mate";
 import { fileURLToPath } from "url";
 import { User } from "./models/user.models.js";
+import { formatDate } from "./utils/fomatDate.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +44,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user; // make sure to trigger this after passport initialization
   res.locals.success = req.flash("success"); // Make flash messages available in views
   res.locals.error = req.flash("error"); // Make error messages available in views
+  res.locals.formatDate = formatDate;
   next();
 });
 
