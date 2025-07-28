@@ -1,0 +1,137 @@
+/* Campground Cards */
+.campgrounds-container {
+  padding: 2rem 0;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+  border: none;
+  overflow: hidden;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.campground-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card-hover:hover .campground-img {
+  transform: scale(1.03);
+}
+
+/* Price Badge */
+.price-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  backdrop-filter: blur(5px);
+}
+
+/* Rating Badge */
+.rating-badge {
+  background-color: #f8f9fa;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+  .campground-img {
+    height: 200px;
+  }
+
+  .row.g-0 {
+    flex-direction: column;
+  }
+}
+
+/* Background Gradient & Base Styles */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4f0f9 100%);
+  min-height: 100vh;
+}
+
+.campgrounds-container {
+  padding: 3rem 0;
+  position: relative;
+}
+
+/* Gradient overlay for visual depth */
+.campgrounds-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(37, 117, 252, 0.2) 0%,
+    transparent 100%
+  );
+  z-index: -1;
+}
+
+/* Card enhancements to stand out against gradient */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  background: white;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Price badge contrast adjustment */
+.price-badge {
+  background: linear-gradient(to right, #2575fc, #6a11cb);
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Button styling to match gradient */
+.btn-primary {
+  background: linear-gradient(to right, #2575fc, #6a11cb);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, #1a68e6, #5a0cb3);
+  transform: translateY(-2px);
+}
+
+.frosted-glass {
+  background: rgba(33, 37, 41, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .campgrounds-container::before {
+    height: 20vh;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e6f0fa 100%);
+  }
+}
