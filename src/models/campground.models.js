@@ -11,31 +11,36 @@ imageSchema.virtual("thumbnail").get(function () {
   else return this.url.replace(/\/\d+\/\d+/, "/200/150");
 });
 
-const campgroundSchema = new Schema({
-  title: {
-    type: String,
-  },
-  price: {
-    type: Number,
-  },
-  location: {
-    type: String,
-  },
-  images: [imageSchema],
-  description: {
-    type: String,
-  },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-  reviews: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Review",
+const campgroundSchema = new Schema(
+  {
+    title: {
+      type: String,
     },
-  ],
-});
+    price: {
+      type: Number,
+    },
+    location: {
+      type: String,
+    },
+    images: [imageSchema],
+    description: {
+      type: String,
+    },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // Middleware to delete associated reviews when a campground is deleted
 campgroundSchema.post("findOneAndDelete", async (doc) => {
