@@ -6,7 +6,9 @@ const imageSchema = new Schema({
 });
 
 imageSchema.virtual("thumbnail").get(function () {
-  return this.url.replace("/upload", "/upload/w_100");
+  if (this.url && this.url.includes("cloudinary"))
+    return this.url.replace("/upload", "/upload/w_100");
+  else return this.url.replace(/\/\d+\/\d+/, "/200/150");
 });
 
 const campgroundSchema = new Schema({
