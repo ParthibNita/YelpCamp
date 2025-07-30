@@ -12,14 +12,17 @@
       </div>
       <div class="navbar-nav ms-auto">
         <% if (!currentUser) { %>
-          <a class="nav-link fw-bolder" href="/users/register">Login/Register</a>
+          <a class="nav-link fw-bolder" href="/users/register">
+            <i class="fa-solid fa-user"></i>
+            Login/Register
+          </a>
         <% } else { %>
           <li class="nav-item dropdown">
             <a class="nav-link fw-bold dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <%= currentUser.username %>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/users/profile">My Profile</a></li>
+              <li><a class="dropdown-item" href="/users/profile/<%= currentUser.username %>">My Profile</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/users/logout">Logout</a></li>
             </ul>
