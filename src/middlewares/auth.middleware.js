@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Review } from "../models/reviews.models.js";
 import { Campground } from "../models/campground.models.js";
+import { User } from "../models/user.models.js";
 
 const isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -48,4 +49,19 @@ const isReviewAuthor = async (req, res, next) => {
   next();
 };
 
-export { isLoggedIn, redirectRoute, isAuthor, isReviewAuthor };
+const isProfileAuthor = async (req, res, next) => {
+  const { username } = req.params;
+  const user = await User.findOne({ username });
+  if (!user) {
+    req.flash("error", "User not found");
+    return res.redirect("/");
+  }
+  if (!user._id.equals(req.user._id)) {
+    req.flash("error", "You don't have permission to do that!");
+    return res.redirect(`/users/${username}`);
+  }
+  req.profileUser = user;
+  next();
+};
+
+export { isLoggedIn, redirectRoute, isAuthor, isReviewAuthor, isProfileAuthor };
