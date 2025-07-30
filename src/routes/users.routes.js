@@ -1,12 +1,19 @@
 import { Router } from "express";
 import passport from "passport";
-import { isLoggedIn, redirectRoute } from "../middlewares/auth.middleware.js";
+import {
+  isLoggedIn,
+  isProfileAuthor,
+  redirectRoute,
+} from "../middlewares/auth.middleware.js";
 import {
   loginUser,
   logoutUser,
   registerUser,
+  updateAvatar,
+  updateUserProfile,
   userProfile,
 } from "../controllers/users.controller.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
@@ -35,6 +42,17 @@ router
 
 router.route("/logout").get(isLoggedIn, logoutUser);
 
-router.route("/profile/:username").get(isLoggedIn, redirectRoute, userProfile);
+router
+  .route("/profile/:username")
+  .get(isLoggedIn, userProfile)
+  .put(isLoggedIn, isProfileAuthor, updateUserProfile);
 
+router
+  .route("/profile/:username/avatar")
+  .put(
+    isLoggedIn,
+    isProfileAuthor,
+    upload.single("user[avatar]"),
+    updateAvatar
+  );
 export default router;

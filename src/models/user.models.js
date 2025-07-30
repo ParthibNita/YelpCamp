@@ -7,6 +7,13 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    avatar: {
+      url: String,
+      filename: String,
+    },
+    bio: {
+      type: String,
+    },
   },
   {
     timestamps: true,
