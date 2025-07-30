@@ -1,0 +1,105 @@
+:root {
+  --primary-color: #0d6efd;
+  --light-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+}
+
+body {
+  background-color: var(--light-bg);
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+}
+
+.profile-header-card {
+  background-color: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
+}
+
+.avatar-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: #90e0ef;
+  transition: transform 0.3s ease;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: #00b4d8; */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-container:hover .avatar-overlay {
+  opacity: 1;
+}
+.avatar-container:hover .avatar-img {
+  transform: scale(1.05);
+}
+#editAvatarIcon {
+  color: white;
+  font-size: 2.5rem;
+}
+
+/* Tabs Section */
+.nav-tabs {
+  border-bottom: 1px solid var(--border-color);
+}
+.nav-tabs .nav-link {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+}
+.nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.content-card {
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  overflow: hidden;
+}
+.content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+.card-title a {
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.card-title a:hover {
+  color: var(--primary-color);
+}
