@@ -30,7 +30,10 @@ const createNewCampground = asyncHandler(async (req, res) => {
   const { title, price, location, description } = req.body.campgrounds;
   // console.log(req.files);
   const uploadedImages = await Promise.all(
-    req.files?.map(async (file) => await uploadFileOnCloudinary(file.path))
+    req.files?.map(
+      async (file) =>
+        await uploadFileOnCloudinary(file.path, "Yelpcamp/campgrounds")
+    )
   );
   // console.log(uploadedImages);
 
@@ -65,7 +68,7 @@ const viewCampground = asyncHandler(async (req, res) => {
   }
 
   const reviewPage = parseInt(req.query.reviewPage) || 1;
-  const limit = 4;
+  const limit = 5;
   const skip = (reviewPage - 1) * limit;
   const totalReviews = await Review.countDocuments({
     _id: { $in: campground.reviews },
@@ -75,7 +78,7 @@ const viewCampground = asyncHandler(async (req, res) => {
     .skip(skip)
     .limit(limit)
     .populate("author");
-  console.log(campground);
+  // console.log(campground);
   res.render("campgrounds/show", {
     campground,
     reviews,
@@ -93,7 +96,10 @@ const getEditCampground = asyncHandler(async (req, res) => {
 const postEditCampground = asyncHandler(async (req, res) => {
   const { title, price, location, description } = req.body.campgrounds;
   const uploadedImages = await Promise.all(
-    req.files?.map(async (file) => await uploadFileOnCloudinary(file.path))
+    req.files?.map(
+      async (file) =>
+        await uploadFileOnCloudinary(file.path, "Yelpcamp/campgrounds")
+    )
   );
   const newImages = uploadedImages.map((file) => ({
     url: file.secure_url,
@@ -131,7 +137,20 @@ const postEditCampground = asyncHandler(async (req, res) => {
 });
 
 const deleteCampground = asyncHandler(async (req, res) => {
-  await Campground.findByIdAndDelete(req.params.id);
+  const { id } = req.params;
+  const campground = await Campground.findById(id);
+  if (!campground) {
+    req.flash("error", "Campground not found!");
+    return res.redirect("/campgrounds");
+  }
+  if (campground.images && campground.images.length > 0) {
+    await Promise.all(
+      campground.images.map(async (image) => {
+        await deleteFileOnCloudinary(image.filename);
+      })
+    );
+  }
+  await Campground.findByIdAndDelete(id);
   req.flash("success", "Campground deleted successfully!");
   res.redirect("/campgrounds");
 });

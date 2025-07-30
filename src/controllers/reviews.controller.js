@@ -13,7 +13,11 @@ const postReview = asyncHandler(async (req, res) => {
     req.flash("error", "You can't review your own campground!");
     return res.redirect(`/campgrounds/${id}`);
   }
-  const review = new Review({ ...req.body.reviews, author: req.user._id });
+  const review = new Review({
+    ...req.body.reviews,
+    author: req.user._id,
+    campground: id,
+  });
   campground.reviews.push(review);
   await review.save();
   await campground.save();
