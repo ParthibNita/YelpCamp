@@ -31,17 +31,21 @@ app.all("*all", (_, __, next) => {
 
 //error middleware
 app.use((err, req, res, __) => {
+  const handleUploadError = (message) => {
+    req.flash("error", message);
+    req.session.save(() => res.redirect(req.session.returnTo));
+  };
+
   if (err.message === "Invalid_File_Type") {
-    req.flash("error", "Invalid File Type");
-    return res.redirect(req.session.returnTo);
+    return handleUploadError(
+      "Invalid file type. Only JPEG, JPG, and PNG are allowed."
+    );
   }
   if (err.message === "File too large") {
-    req.flash("error", "File should be less than 5MB");
-    return res.redirect(req.session.returnTo);
+    return handleUploadError("File size exceeds the maximum limit of 5MB.");
   }
   if (err.message === "Unexpected field") {
-    req.flash("error", "You cannot upload more than the specified limit");
-    return res.redirect(req.session.returnTo);
+    return handleUploadError("You cannot upload more than the specified limit");
   }
   const { statusCode = 500 } = err;
   res.status(statusCode).render("error", { err });
