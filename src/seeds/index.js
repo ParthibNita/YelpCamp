@@ -26,11 +26,21 @@ connectDB()
     await Campground.deleteMany({}); // Clear existing campgrounds
     for (let i = 0; i < 50; i++) {
       const camp = new Campground({
-        author: "6866ae912c668336b3334ac0",
+        author: "6887c796a8a659dd8b1a75d5",
         title: `${random(cities).city} , ${random(cities).state}`,
         price: `${random(prices)}`,
         location: `${random(descriptors)} ${random(places)}`,
-        image: `https://picsum.photos/400?random=${Math.random()}`,
+        images: [
+          {
+            // Use a unique seed for each image
+            url: `https://picsum.photos/seed/${i}-1/800/600`,
+            filename: `picsum-seed-${i}-1`,
+          },
+          {
+            url: `https://picsum.photos/seed/${i}-2/800/600`,
+            filename: `picsum-seed-${i}-2`,
+          },
+        ],
         description:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dicta ea facilis itaque eius voluptates veritatis, ipsam ab voluptate beatae saepe delectus quia non distinctio, labore aspernatur. Numquam, magni unde.",
       });
