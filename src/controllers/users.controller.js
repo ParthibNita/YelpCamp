@@ -59,7 +59,42 @@ const userProfile = asyncHandler(async (req, res) => {
   const reviews = await Review.find({ author: user._id }).populate(
     "campground"
   );
-  res.render("users/profile", { user, campgrounds, reviews });
+  const campsIds = campgrounds.map((camp) => camp._id);
+
+  const likesArray = await Campground.aggregate([
+    {
+      $match: {
+        author: user._id,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        likesCount: {
+          $sum: "$likeCount",
+        },
+      },
+    },
+  ]);
+  const totalLikes = likesArray.length ? likesArray[0].likesCount : 0;
+
+  const avgRatingArray = await Review.aggregate([
+    { $match: { campground: { $in: campsIds } } },
+    {
+      $group: {
+        _id: null,
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+  const avgRating = avgRatingArray.length ? avgRatingArray[0].avgRating : 0;
+  res.render("users/profile", {
+    user,
+    campgrounds,
+    reviews,
+    totalLikes,
+    avgRating,
+  });
 });
 
 const updateAvatar = asyncHandler(async (req, res) => {
