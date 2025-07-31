@@ -49,7 +49,7 @@ const logoutUser = (req, res, next) => {
 const userProfile = asyncHandler(async (req, res) => {
   req.session.returnTo = req.originalUrl;
   const { username } = req.params;
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).populate("likedCampgrounds");
   if (!user) {
     req.flash("error", "User not found");
     return res.redirect("/");

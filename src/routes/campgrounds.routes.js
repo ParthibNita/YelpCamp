@@ -9,6 +9,7 @@ import {
   getEditCampground,
   postEditCampground,
   deleteCampground,
+  likeCampground,
 } from "../controllers/campgrounds.controllers.js";
 import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
@@ -38,5 +39,7 @@ router
   .delete(isLoggedIn, isAuthor, deleteCampground);
 
 router.route("/:id/edit").get(isLoggedIn, isAuthor, getEditCampground);
+
+router.route("/:id/like").post(isLoggedIn, likeCampground);
 
 export default router;
