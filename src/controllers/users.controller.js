@@ -131,6 +131,41 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     res.redirect(`/users/profile/${updatedUser.username}`);
   });
 });
+
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const user = req.profileUser;
+  if (!user) {
+    req.flash("error", "User not found");
+    return res.redirect(`/`);
+  }
+  const userCampground = await Campground.find({ author: user._id });
+  if (userCampground && userCampground.length > 0) {
+    for (const campground of userCampground) {
+      if (campground.images && campground.images.length > 0) {
+        await Promise.all(
+          campground.images.map(async (image) => {
+            await deleteFileOnCloudinary(image.filename);
+          })
+        );
+      }
+    }
+  }
+  await Campground.deleteMany({ author: user._id });
+  await Review.deleteMany({ author: user._id });
+
+  if (user.avatar && user.avatar.filename) {
+    await deleteFileOnCloudinary(user.avatar.filename);
+  }
+  await User.findByIdAndDelete(user._id);
+
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "Your account has been deleted");
+    res.redirect("/");
+  });
+});
 export {
   registerUser,
   loginUser,
@@ -138,4 +173,5 @@ export {
   userProfile,
   updateAvatar,
   updateUserProfile,
+  deleteUser,
 };

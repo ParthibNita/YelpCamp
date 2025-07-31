@@ -18,4 +18,21 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  const deleteModal = document.getElementById("deleteAccountModal");
+  if (deleteModal) {
+    const deleteConfirmInput = document.getElementById("deleteConfirmInput");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+    if (deleteConfirmInput && confirmDeleteBtn) {
+      const requiredUsername = document
+        .getElementById("usernamejs")
+        .textContent.trim();
+
+      deleteConfirmInput.addEventListener("input", () => {
+        confirmDeleteBtn.disabled =
+          deleteConfirmInput.value !== requiredUsername;
+      });
+    }
+  }
 });

@@ -6,6 +6,7 @@ import {
   redirectRoute,
 } from "../middlewares/auth.middleware.js";
 import {
+  deleteUser,
   loginUser,
   logoutUser,
   registerUser,
@@ -45,7 +46,8 @@ router.route("/logout").get(isLoggedIn, logoutUser);
 router
   .route("/profile/:username")
   .get(isLoggedIn, userProfile)
-  .put(isLoggedIn, isProfileAuthor, updateUserProfile);
+  .put(isLoggedIn, isProfileAuthor, updateUserProfile)
+  .delete(isLoggedIn, isProfileAuthor, deleteUser);
 
 router
   .route("/profile/:username/avatar")
