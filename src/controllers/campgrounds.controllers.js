@@ -186,7 +186,7 @@ const likeCampground = asyncHandler(async (req, res) => {
     });
     req.flash("success", "Liked Campground");
   }
-  res.redirect(`/campgrounds/${id}`);
+  res.redirect(req.header("Referer"));
 });
 
 export {

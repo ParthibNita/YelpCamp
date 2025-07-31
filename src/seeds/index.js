@@ -4,6 +4,7 @@ import cities from "./cities.js";
 import prices from "./prices.js";
 import descriptors, { places } from "./places.js";
 import { Review } from "../models/reviews.models.js";
+import { User } from "../models/user.models.js";
 
 const connectDB = async () => {
   try {
@@ -24,6 +25,7 @@ connectDB()
   .then(async () => {
     await Review.deleteMany({});
     await Campground.deleteMany({}); // Clear existing campgrounds
+    await User.updateMany({}, { $set: { likedCampgrounds: [] } });
     for (let i = 0; i < 50; i++) {
       const camp = new Campground({
         author: "6887c796a8a659dd8b1a75d5",

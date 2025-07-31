@@ -5,7 +5,9 @@ import { User } from "../models/user.models.js";
 
 const isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
-    req.session.returnTo = req.originalUrl;
+    if (req.method === "GET") {
+      req.session.returnTo = req.originalUrl;
+    }
     req.flash("error", "Please log in first");
     return res.redirect("/users/login");
   }
