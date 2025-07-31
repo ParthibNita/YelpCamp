@@ -6,6 +6,7 @@ import {
   deleteFileOnCloudinary,
 } from "../utils/cloudinary.js";
 import { Review } from "../models/reviews.models.js";
+import { User } from "../models/user.models.js";
 
 const getAllCampgrounds = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -155,6 +156,39 @@ const deleteCampground = asyncHandler(async (req, res) => {
   res.redirect("/campgrounds");
 });
 
+const likeCampground = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const campground = await Campground.findById(id);
+  if (!campground) {
+    req.flash("error", "Campground not found!");
+    return res.redirect("/campgrounds");
+  }
+  const isLiked = campground.likes.includes(req.user._id);
+  if (isLiked) {
+    //unliking
+    await campground.updateOne({
+      $pull: { likes: req.user._id },
+      $inc: { likeCount: -1 },
+    });
+    await User.findByIdAndUpdate(req.user._id, {
+      $pull: { likedCampgrounds: id },
+    });
+    req.flash("success", "Unliked Campground");
+  } else {
+    //liking
+    await campground.updateOne({
+      $push: { likes: req.user._id },
+      $inc: { likeCount: 1 },
+    });
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $addToSet: { likedCampgrounds: id },
+    });
+    req.flash("success", "Liked Campground");
+  }
+  res.redirect(`/campgrounds/${id}`);
+});
+
 export {
   getAllCampgrounds,
   getNewCampground,
@@ -163,4 +197,5 @@ export {
   getEditCampground,
   postEditCampground,
   deleteCampground,
+  likeCampground,
 };

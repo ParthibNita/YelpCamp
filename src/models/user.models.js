@@ -14,6 +14,12 @@ const UserSchema = new Schema(
     bio: {
       type: String,
     },
+    likedCampgrounds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Campground",
+      },
+    ],
   },
   {
     timestamps: true,
