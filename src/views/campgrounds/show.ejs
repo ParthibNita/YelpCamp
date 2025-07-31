@@ -32,6 +32,19 @@
         <% } else { %>
           <img src="https://via.placeholder.com/500x300?text=No+Image" class="card-img-top" alt="No image available">
         <% } %>
+
+          <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="like-form">
+            <button type="submit" class="like-button">
+                <% if (currentUser && campground.likes.includes(currentUser._id)) { %>
+                    <!-- User has liked it: show solid red heart -->
+                    <i class="fas fa-heart text-danger"></i>
+                <% } else { %>
+                    <!-- User has not liked it: show outline heart -->
+                    <i class="far fa-heart"></i>
+                <% } %>
+            </button>
+          </form>
+
         <!-- campground details -->
         <div class="card-body">
           <div class="row">
@@ -147,8 +160,17 @@
               <p class="starability-result mb-0" data-rating=<%= rating %>>
                 Rated: <%= rating %> stars
               </p>
-              <small class="card-author text-secondary">by <strong><%= author.username %></strong></small>
-              <h5 class="card-text fw-bold"><%= body %></h5>
+              <small class="card-author text-secondary">
+                by 
+                <strong>
+                  <a href="/users/profile/<%= author.username %>"
+                     style="text-decoration: none;"
+                  >
+                     <%= author.username %>
+                  </a>
+                </strong>
+              </small>
+              <h5 class="card-text "><%= body %></h5>
               <% if(currentUser && author.equals(currentUser._id)){ %>
               <form
                 action="/campgrounds/<%= campground._id %>/reviews/<%= _id %>?_method=DELETE"

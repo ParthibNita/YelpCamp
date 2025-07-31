@@ -14,17 +14,27 @@
     </div>
 
     <div class="row row-cols-1 row-cols-lg-2 g-4">
-        <% campgrounds.forEach(({_id, title, description, location, images, price}) => { %>
+        <% campgrounds.forEach(({_id, title, description, location, images, price, likes}) => { %>
             <div class="col">
                 <div class="card card-hover h-100 shadow-sm">
                     <div class="row g-0 h-100">
                         <div class="col-md-5 position-relative">
                             <img 
-                                src="<%= images[0].url || 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' %>" 
+                                src="<%= images[0].url %>" 
                                 class="campground-img rounded-start" 
                                 alt="<%= title %>"
                             >
-                            <div class="price-badge">$<%= price || '25' %>/night</div>
+                            <form action="/campgrounds/<%= _id %>/like" method="POST" class="like-form">
+                                <button type="submit" class="like-button">
+                                    <% if (currentUser && likes.includes(currentUser._id)) { %>
+                                        <!-- User has liked it: show solid red heart -->
+                                        <i class="fas fa-heart text-danger"></i>
+                                    <% } else { %>
+                                        <!-- User has not liked it: show outline heart -->
+                                        <i class="far fa-heart"></i>
+                                    <% } %>
+                                </button>
+                            </form>
                         </div>
                         <div class="col-md-7">
                             <div class="card-body d-flex flex-column h-100">
