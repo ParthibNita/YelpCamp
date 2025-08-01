@@ -1,0 +1,62 @@
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="stat-card text-center">
+      <div class="stat-icon"><i class="fas fa-heart"></i></div>
+      <div class="stat-number" data-target="<%= totalLikes %>">0</div>
+      <div class="stat-label">Total Likes Received</div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="stat-card text-center">
+      <div class="stat-icon"><i class="fas fa-star"></i></div>
+      <div class="stat-number" data-target="<%= avgRating %>">0</div>
+      <div class="stat-label">Average Campground Rating</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-3">
+  <div class="col-md-6">
+    <div class="stat-card">
+      <h5 class="card-title text-center mb-3">Contribution Mix</h5>
+      <div class="d-flex justify-content-center align-items-center">
+        <% const totalContributions = campgrounds.length + reviews.length || 1;
+        %> <% const campPercent = (campgrounds.length / totalContributions) *
+        100; %> <% const reviewPercent = 100 - campPercent; %>
+        <div
+          class="donut-chart"
+          style="
+            --camp-percent: <%= campPercent %>%;
+            --review-percent: <%= reviewPercent %>%;
+          "
+        ></div>
+        <ul class="list-unstyled ms-4">
+          <li><span class="legend-dot camp"></span> Campgrounds</li>
+          <li class="mt-2"><span class="legend-dot review"></span> Reviews</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="stat-card">
+      <h5 class="card-title text-center mb-3">Community Footprint</h5>
+      <div class="d-flex justify-content-center align-items-center">
+        <% const totalFootprint = user.likedCampgrounds.length +
+        campgrounds.length || 1; %> <% const createdPercent =
+        (campgrounds.length / totalFootprint) * 100; %> <% const likedPercent =
+        100 - createdPercent; %>
+        <div
+          class="donut-chart"
+          style="
+            --camp-percent: <%= createdPercent %>%;
+            --review-percent: <%= likedPercent %>%;
+          "
+        ></div>
+        <ul class="list-unstyled ms-4">
+          <li><span class="legend-dot camp"></span> Created</li>
+          <li class="mt-2"><span class="legend-dot review"></span> Liked</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
