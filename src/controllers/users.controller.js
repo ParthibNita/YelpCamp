@@ -88,12 +88,37 @@ const userProfile = asyncHandler(async (req, res) => {
     },
   ]);
   const avgRating = avgRatingArray.length ? avgRatingArray[0].avgRating : 0;
+
+  let ratingDistribution = {};
+  if (req.user && req.user._id.equals(user._id)) {
+    const rating = await Review.aggregate([
+      { $match: { author: user._id } },
+      {
+        $group: {
+          _id: "$rating",
+          ratingCount: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    for (let i = 1; i <= 5; i++) {
+      const rate = rating.find((r) => r._id === i);
+      ratingDistribution[i] = rate ? rate.ratingCount : 0;
+    }
+    console.log("Rating Distribution:", ratingDistribution);
+  }
   res.render("users/profile", {
     user,
     campgrounds,
     reviews,
     totalLikes,
     avgRating,
+    ratingDistribution,
   });
 });
 
