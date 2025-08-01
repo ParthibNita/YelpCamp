@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #0d6efd;
-  --light-bg: #f8f9fa;
+  --primary-color: #0077b6;
+  --light-bg: #f1faee;
   --card-bg: #ffffff;
   --border-color: #dee2e6;
   --text-primary: #212529;
@@ -11,14 +11,15 @@ body {
   background-color: var(--light-bg);
   color: var(--text-primary);
   font-family: "Inter", sans-serif;
+  font-size: 1.3rem;
 }
 
-.profile-header-card {
+/* .profile-header-card {
   background-color: var(--card-bg);
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--border-color);
-}
+} */
 
 .avatar-container {
   position: relative;
@@ -32,9 +33,9 @@ body {
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  background-color: #90e0ef;
+  border: 2px solid var(--light-bg);
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); */
+  background-color: var(--primary-color);
   transition: transform 0.3s ease;
 }
 
@@ -57,11 +58,11 @@ body {
   opacity: 1;
 }
 .avatar-container:hover .avatar-img {
-  transform: scale(1.05);
+  transform: scale(1.25);
 }
 #editAvatarIcon {
   color: white;
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 
 /* Tabs Section */
@@ -74,10 +75,12 @@ body {
   color: var(--text-secondary);
   font-weight: 500;
   padding: 0.75rem 1.25rem;
+  margin-right: 0.8rem;
 }
 .nav-tabs .nav-link.active {
   color: var(--primary-color);
   border-bottom: 2px solid var(--primary-color);
+  background-color: var(--light-bg);
 }
 
 .content-card {
@@ -102,4 +105,21 @@ body {
 }
 .card-title a:hover {
   color: var(--primary-color);
+}
+
+.btnjs {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.btnjs:hover {
+  background-color: #0077b6;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
