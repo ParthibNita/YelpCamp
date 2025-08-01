@@ -1,15 +1,15 @@
 <div class="row g-4">
   <div class="col-md-6">
     <div class="stat-card text-center">
-      <div class="stat-icon"><i class="fas fa-heart"></i></div>
-      <div class="stat-number" data-target="<%= totalLikes %>">0</div>
+      <div class="stat-icon likecss"><i class="fas fa-heart"></i></div>
+      <div class="stat-number likecss" data-target="<%= totalLikes %>">0</div>
       <div class="stat-label">Total Likes Received</div>
     </div>
   </div>
   <div class="col-md-6">
     <div class="stat-card text-center">
-      <div class="stat-icon"><i class="fas fa-star"></i></div>
-      <div class="stat-number" data-target="<%= avgRating %>">0</div>
+      <div class="stat-icon starcss"><i class="fas fa-star"></i></div>
+      <div class="stat-number starcss" data-target="<%= avgRating %>">0</div>
       <div class="stat-label">Average Rating Recieved</div>
     </div>
   </div>
@@ -41,26 +41,29 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-6">
+  <div class="col-md-6">
+    <% if(currentUser && user._id.equals(currentUser._id)) { %>
     <div class="stat-card">
-      <h5 class="card-title text-center mb-3">Community Footprint</h5>
-      <div class="d-flex justify-content-center align-items-center">
-        <% const totalFootprint = user.likedCampgrounds.length +
-        campgrounds.length || 1; %> <% const createdPercent =
-        (campgrounds.length / totalFootprint) * 100; %> <% const likedPercent =
-        100 - createdPercent; %>
-        <div
-          class="donut-chart"
-          style="
-            --camp-percent: <%= createdPercent %>%;
-            --review-percent: <%= likedPercent %>%;
-          "
-        ></div>
-        <ul class="list-unstyled ms-4">
-          <li><span class="legend-dot camp"></span> Created</li>
-          <li class="mt-2"><span class="legend-dot review"></span> Liked</li>
-        </ul>
-      </div>
+        <h5 class="card-title mb-4">Your Rating Habits (Private <i class="fa-solid fa-lock"></i>)</h5>
+        <div class="bar-chart">
+            <% const maxRatingCount = Math.max(...Object.values(ratingDistribution)) || 1; %>
+            <% for(let i = 5; i >= 1; i--) { %>
+                <% const ratingCount = ratingDistribution[i] || 0; %>
+                <div class="bar-row">
+                    <div class="bar-label"><%= i %> Star</div>
+                    <div class="bar-wrap">
+                        <div 
+                            class="bar" 
+                            style="width: 0%" 
+                            data-width="<%= (ratingCount / maxRatingCount) * 100 %>%" 
+                            data-count="<%= ratingCount %>"
+                        ></div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
     </div>
-  </div> -->
+    <% } %>
+  </div>
+</div>
 </div>

@@ -1,20 +1,36 @@
+:root {
+  --review-color: #ffc300;
+  --like-color: #ef233c;
+  --primary-color: #0077b6;
+}
+
 .stat-card {
-  background-color: #ffffff;
+  background-color: #f9f7f3;
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid #dee2e6;
+  border: 1px wavy #f9f7f3;
   height: 100%;
+  transition: transform 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-5px) scale(1.05);
 }
 .stat-icon {
   font-size: 1.5rem;
-  color: #0077b6;
+  /* color: #0077b6; */
   margin-bottom: 0.5rem;
+}
+.likecss {
+  color: var(--like-color);
+}
+.starcss {
+  color: var(--review-color);
 }
 .stat-number {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #212529;
+  /* color: #212529; */
 }
 .stat-label {
   font-size: 0.9rem;
@@ -30,9 +46,9 @@
   height: 120px;
   border-radius: 50%;
   background: conic-gradient(
-    #0077b6 0% var(--camp-percent),
-    #ffc300 var(--camp-percent) var(--review-stop),
-    #ef233c var(--review-stop) 100%
+    var(--primary-color) 0% var(--camp-percent),
+    var(--review-color) var(--camp-percent) var(--review-stop),
+    var(--like-color) var(--review-stop) 100%
   );
   position: relative;
 }
@@ -44,13 +60,13 @@
   margin-right: 8px;
 }
 .legend-dot.camp {
-  background-color: #0077b6;
+  background-color: var(--primary-color);
 }
 .legend-dot.review {
-  background-color: #ffc300;
+  background-color: var(--review-color);
 }
 .legend-dot.liked {
-  background-color: #ef233c;
+  background-color: var(--like-color);
 }
 
 .bar-chart {
@@ -74,7 +90,7 @@
 }
 .bar {
   height: 20px;
-  background: linear-gradient(90deg, #0077b6, #6610f2);
+  background: linear-gradient(90deg, var(--review-color), #f9a620);
   border-radius: 5px;
   text-align: right;
   color: white;

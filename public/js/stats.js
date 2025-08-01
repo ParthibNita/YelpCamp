@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const animateCountUp = (el) => {
     const target = parseFloat(el.dataset.target);
-    const duration = 500; // 1.5 seconds
+    const duration = 500;
     let start = null;
 
     const step = (timestamp) => {
