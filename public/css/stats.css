@@ -8,7 +8,7 @@
 }
 .stat-icon {
   font-size: 1.5rem;
-  color: #0d6efd;
+  color: #0077b6;
   margin-bottom: 0.5rem;
 }
 .stat-number {
@@ -30,8 +30,9 @@
   height: 120px;
   border-radius: 50%;
   background: conic-gradient(
-    #0d6efd 0% var(--camp-percent),
-    #6c757d var(--camp-percent) 100%
+    #0077b6 0% var(--camp-percent),
+    #ffc300 var(--camp-percent) var(--review-stop),
+    #ef233c var(--review-stop) 100%
   );
   position: relative;
 }
@@ -43,10 +44,13 @@
   margin-right: 8px;
 }
 .legend-dot.camp {
-  background-color: #0d6efd;
+  background-color: #0077b6;
 }
 .legend-dot.review {
-  background-color: #6c757d;
+  background-color: #ffc300;
+}
+.legend-dot.liked {
+  background-color: #ef233c;
 }
 
 .bar-chart {
@@ -70,7 +74,7 @@
 }
 .bar {
   height: 20px;
-  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  background: linear-gradient(90deg, #0077b6, #6610f2);
   border-radius: 5px;
   text-align: right;
   color: white;
