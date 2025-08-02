@@ -20,7 +20,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
       if (err) return next(err);
       req.flash(
         "success",
-        `Hello <strong>${registeredUser.username}</strong>. Welcome to YelpCamp!`
+        `Welcome to YelpCamp, <strong>${registeredUser.username}</strong> <i class="fa-solid fa-door-open"></i>`
       );
       res.redirect("/");
     });
@@ -29,6 +29,13 @@ const registerUser = asyncHandler(async (req, res, next) => {
     res.redirect("/users/register");
   }
 });
+
+const getLoginForm = (req, res) => {
+  if (!req.session.returnTo) {
+    req.session.returnTo = req.header("Referer");
+  }
+  res.render("users/login");
+};
 
 const loginUser = asyncHandler(async (req, res) => {
   req.flash("success", `Welcome back! <strong>${req.user.username}</strong>`);
@@ -110,7 +117,7 @@ const userProfile = asyncHandler(async (req, res) => {
       const rate = rating.find((r) => r._id === i);
       ratingDistribution[i] = rate ? rate.ratingCount : 0;
     }
-    console.log("Rating Distribution:", ratingDistribution);
+    // console.log("Rating Distribution:", ratingDistribution);
   }
   res.render("users/profile", {
     user,
@@ -208,9 +215,9 @@ const deleteUser = asyncHandler(async (req, res, next) => {
           })
         );
       }
+      await Campground.findByIdAndDelete(campground._id);
     }
   }
-  await Campground.deleteMany({ author: user._id });
   await Review.deleteMany({ author: user._id });
 
   if (user.avatar && user.avatar.filename) {
@@ -228,6 +235,7 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 });
 export {
   registerUser,
+  getLoginForm,
   loginUser,
   logoutUser,
   userProfile,

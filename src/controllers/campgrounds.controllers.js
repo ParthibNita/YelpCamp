@@ -22,8 +22,8 @@ const getAllCampgrounds = asyncHandler(async (req, res) => {
   });
 });
 
-const getNewCampground = (req, res) => {
-  req.session.returnTo = req.originalUrl;
+const getNewCampground = (_, res) => {
+  // req.session.returnTo = req.originalUrl;
   res.render("campgrounds/create");
 };
 
@@ -89,7 +89,7 @@ const viewCampground = asyncHandler(async (req, res) => {
 });
 
 const getEditCampground = asyncHandler(async (req, res) => {
-  req.session.returnTo = req.originalUrl;
+  // req.session.returnTo = req.originalUrl;
   const campground = await Campground.findById(req.params.id);
   res.render("campgrounds/edit", { campground });
 });

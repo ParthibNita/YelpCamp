@@ -7,6 +7,7 @@ import {
 } from "../middlewares/auth.middleware.js";
 import {
   deleteUser,
+  getLoginForm,
   loginUser,
   logoutUser,
   registerUser,
@@ -29,9 +30,7 @@ router
 
 router
   .route("/login")
-  .get((_, res) => {
-    res.render("users/login");
-  })
+  .get(getLoginForm)
   .post(
     redirectRoute,
     passport.authenticate("local", {
