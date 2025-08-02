@@ -2,8 +2,8 @@
 <link rel="stylesheet" href="/css/stars.css">
 <div class="container mt-5">
   <div class="row">
-    <div class="col-lg-6 mx-auto">
-      <!-- Header with title and buttons -->
+    <div class="col-lg-7 mx-auto">
+      
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0"><%= campground.title %></h1>
       </div>
@@ -36,10 +36,8 @@
           <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="like-form">
             <button type="submit" class="like-button">
                 <% if (currentUser && campground.likes.includes(currentUser._id)) { %>
-                    <!-- User has liked it: show solid red heart -->
                     <i class="fas fa-heart text-danger"></i>
                 <% } else { %>
-                    <!-- User has not liked it: show outline heart -->
                     <i class="far fa-heart"></i>
                 <% } %>
             </button>
@@ -104,47 +102,25 @@
           <% } %>
         </div>
       </div>
+      <div class="text-center mb-2">
+        <a href="/campgrounds" class="btn btn-outline-secondary">
+          <i class="fas fa-arrow-left me-2"></i> Back to All Campgrounds
+        </a>
+      </div>
     </div>
-    <div class="col-lg-6 mx-auto">
-      <!-- Reviews Section -->
-      <h1 class="mb-2">Rate Your Experience</h1>
+    <!-- Reviews -->
+    <div class="col-lg-5 mx-auto">
+       <h1 class="mb-2 text-center ">Review Section</h1>
+       <hr>
       <% if(currentUser) { %>
-      <form 
-        action="/campgrounds/<%= campground._id %>/reviews" 
-        method="POST" 
-        class="validateForm" 
-        novalidate
-      >
-        <fieldset class="starability-growRotate">
-          <input type="radio" id="no-rate" class="input-no-rate" name="reviews[rating]" value="1" checked aria-label="No rating." />
-          <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
-          <label for="first-rate1" title="Terrible">1 star</label>
-          <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
-          <label for="first-rate2" title="Not good">2 stars</label>
-          <input type="radio" id="first-rate3" name="reviews[rating]" value="3" />
-          <label for="first-rate3" title="Average">3 stars</label>
-          <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
-          <label for="first-rate4" title="Very good">4 stars</label>
-          <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
-          <label for="first-rate5" title="Amazing">5 stars</label>
-        </fieldset>
-        <div class="mb-3">
-          <h4><label for="body" class="form-label">Describe your experience</label></h4>
-          <textarea
-            name="reviews[body]"
-            class="form-control"
-            id="body"
-            rows="3"
-            required
-          ></textarea>
-          <div class="valid-feedback">Looks good!</div>
-          <div class="invalid-feedback">
-            Please provide a review.
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">
-          Submit Review
+        <button 
+          class="my-3 btn btn-primary btn-sm text-center py-2 px-3" 
+          data-bs-toggle="modal" 
+          data-bs-target="#reviewModal"
+          >
+            <i class="fas fa-pencil-alt me-1"></i> 
+            Add Review
         </button>
-      </form>
       <% } else { %>
       <p class="text-center">Please <a href="/users/login">login</a> to leave a review.</p>
       <% } %>
@@ -156,28 +132,31 @@
         <div class="overflow-auto" style="max-height: 450px;">
           <% reviews.forEach(({body,rating,_id,author}) => { %>
           <div class="card mb-3">
-            <div class="card-body">
-              <p class="starability-result mb-0" data-rating=<%= rating %>>
-                Rated: <%= rating %> stars
-              </p>
-              <small class="card-author text-secondary">
-                by 
-                <strong>
-                  <a href="/users/profile/<%= author.username %>"
-                     style="text-decoration: none;"
-                  >
-                     <%= author.username %>
-                  </a>
-                </strong>
-              </small>
-              <h5 class="card-text "><%= body %></h5>
+            <div class="card-body d-flex">
+              <section>
+                <p class="starability-result mb-0" data-rating=<%= rating %>>
+                  Rated: <%= rating %> stars
+                </p>
+                <small class="card-author text-secondary">
+                  by
+                  <strong>
+                    <a href="/users/profile/<%= author.username %>"
+                       style="text-decoration: none;"
+                    >
+                       <%= author.username %>
+                    </a>
+                  </strong>
+                </small>
+                <h5 class="card-text "><%= body %></h5>
+              </section>
               <% if(currentUser && author.equals(currentUser._id)){ %>
               <form
                 action="/campgrounds/<%= campground._id %>/reviews/<%= _id %>?_method=DELETE"
                 method="POST"
+                class="ms-auto"
               >
-                <button type="submit" class="btn btn-danger ">
-                  <i class="fas fa-trash"></i> Delete
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                  <i class="fas fa-trash"></i>
                 </button>
               </form>
               <% } %>
@@ -214,10 +193,52 @@
       </div>
     </div>
   </div>
-  <!-- Back Button -->
-  <div class="text-center mb-2">
-    <a href="/campgrounds" class="btn btn-outline-secondary">
-      <i class="fas fa-arrow-left me-2"></i> Back to All Campgrounds
-    </a>
-  </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Rate you experience</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form 
+                action="/campgrounds/<%= campground._id %>/reviews" 
+                method="POST"
+                class = "validateForm"
+                novalidate
+            >
+                <div class="modal-body">
+                    <div class="mb-3">
+                      <fieldset class="starability-growRotate">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="reviews[rating]" value="1" checked aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="reviews[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                      </fieldset>
+
+                        <label for="body" class="form-label">Describe</label>
+                        <textarea
+                          name="reviews[body]"
+                          class="form-control"
+                          id="body"
+                          rows="3"
+                        >
+                        </textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

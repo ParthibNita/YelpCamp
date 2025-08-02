@@ -5,7 +5,7 @@ import { ApiError } from "./utils/ApiError.js";
 
 dotenv.config({
   path: ".env",
-}); // Load environment variables from .env file
+});
 
 //Routes
 app.get("/", (_, res) => {
@@ -24,7 +24,6 @@ app.use("/campgrounds", campgroundRoutes);
 import reviewRoutes from "./routes/reviews.routes.js";
 app.use("/campgrounds/:id/reviews", reviewRoutes);
 
-// Error handling for undefined routes
 app.all("*all", (_, __, next) => {
   next(new ApiError(404, "Page Not Found"));
 });
@@ -33,7 +32,7 @@ app.all("*all", (_, __, next) => {
 app.use((err, req, res, __) => {
   const handleUploadError = (message) => {
     req.flash("error", message);
-    req.session.save(() => res.redirect(req.session.returnTo));
+    res.redirect(req.header("Referer"));
   };
 
   if (err.message === "Invalid_File_Type") {
@@ -51,7 +50,7 @@ app.use((err, req, res, __) => {
   res.status(statusCode).render("error", { err });
 });
 
-//Database connection and server start
+//Database connection
 connectDB()
   .then(() => {
     app.listen(3000, () => {
