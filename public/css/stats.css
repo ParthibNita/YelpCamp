@@ -95,10 +95,10 @@
   text-align: right;
   color: white;
   font-size: 0.8rem;
-  padding-right: 8px;
+  /* padding-right: 8px; */
   line-height: 20px;
   position: relative;
-  transition: width 1s ease-out;
+  transition: width 750ms ease-out;
 }
 .bar::after {
   content: attr(data-count);
