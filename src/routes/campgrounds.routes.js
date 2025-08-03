@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { validateCampground } from "../middlewares/validate.middleware.js";
+import {
+  validateCampground,
+  validateImageUploadLimit,
+} from "../middlewares/validate.middleware.js";
 import { isAuthor, isLoggedIn } from "../middlewares/auth.middleware.js";
 import {
   getAllCampgrounds,
@@ -19,8 +22,8 @@ router
   .get(getAllCampgrounds)
   .post(
     isLoggedIn,
-    validateCampground,
     upload.array("campgrounds[image]", 4),
+    validateCampground,
     createNewCampground
   );
 
@@ -32,8 +35,9 @@ router
   .put(
     isLoggedIn,
     isAuthor,
-    validateCampground,
     upload.array("campgrounds[image]", 4),
+    validateImageUploadLimit,
+    validateCampground,
     postEditCampground
   )
   .delete(isLoggedIn, isAuthor, deleteCampground);

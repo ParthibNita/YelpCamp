@@ -1,5 +1,6 @@
 import { CampgroundSchema, ReviewSchema } from "../utils/Schemas.js";
 import { ApiError } from "../utils/ApiError.js";
+import fs from "fs";
 
 const validateCampground = (req, _, next) => {
   //   console.log(req.body);
@@ -22,4 +23,24 @@ const validateReview = (req, _, next) => {
   }
 };
 
-export { validateCampground, validateReview };
+const validateImageUploadLimit = async (req, res, next) => {
+  const maxCount = 4;
+  const campground = req.yourCampground;
+
+  const existingImageCount = campground.images.length;
+  const newImageCount = req.files ? req.files.length : 0;
+  const totalImages = existingImageCount + newImageCount;
+
+  if (totalImages > maxCount) {
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        fs.unlinkSync(file.path);
+      }
+    }
+
+    next(new ApiError(400, "Unexpected field"));
+  }
+  next();
+};
+
+export { validateCampground, validateReview, validateImageUploadLimit };
