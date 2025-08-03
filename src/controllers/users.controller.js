@@ -31,8 +31,11 @@ const registerUser = asyncHandler(async (req, res, next) => {
 });
 
 const getLoginForm = (req, res) => {
-  if (!req.session.returnTo) {
-    req.session.returnTo = req.header("Referer");
+  const referer = req.header("Referer") || "/";
+  const ignorePath = ["/users/register", "/users/login"];
+  const isIgnorePath = ignorePath.some((path) => referer.includes(path));
+  if (!req.session.returnTo && !isIgnorePath) {
+    req.session.returnTo = referer;
   }
   res.render("users/login");
 };

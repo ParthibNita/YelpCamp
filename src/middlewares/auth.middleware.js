@@ -37,6 +37,8 @@ const isAuthor = async (req, res, next) => {
     req.flash("error", "You don't have permission to do that!");
     return res.redirect(`/campgrounds/${id}`);
   }
+
+  req.yourCampground = campground;
   next();
 };
 

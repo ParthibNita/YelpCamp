@@ -30,12 +30,20 @@ const getNewCampground = (_, res) => {
 const createNewCampground = asyncHandler(async (req, res) => {
   const { title, price, location, description } = req.body.campgrounds;
   // console.log(req.files);
+  if (!req.files || req.files.length === 0) {
+    req.flash("error", "Please upload at least one image");
+    return res.redirect("/campgrounds/new");
+  }
   const uploadedImages = await Promise.all(
     req.files?.map(
       async (file) =>
         await uploadFileOnCloudinary(file.path, "Yelpcamp/campgrounds")
     )
   );
+  if (uploadedImages.length === 0) {
+    req.flash("error", "Please upload at least one image");
+    return res.redirect("/campgrounds/new");
+  }
   // console.log(uploadedImages);
 
   const campground = new Campground({
@@ -90,7 +98,7 @@ const viewCampground = asyncHandler(async (req, res) => {
 
 const getEditCampground = asyncHandler(async (req, res) => {
   // req.session.returnTo = req.originalUrl;
-  const campground = await Campground.findById(req.params.id);
+  const campground = req.yourCampground;
   res.render("campgrounds/edit", { campground });
 });
 
@@ -102,7 +110,7 @@ const postEditCampground = asyncHandler(async (req, res) => {
         await uploadFileOnCloudinary(file.path, "Yelpcamp/campgrounds")
     )
   );
-  const newImages = uploadedImages.map((file) => ({
+  const newImages = uploadedImages?.map((file) => ({
     url: file.secure_url,
     filename: file.public_id,
   }));
