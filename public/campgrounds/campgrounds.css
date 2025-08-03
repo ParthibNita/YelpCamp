@@ -1,4 +1,9 @@
-/* Campground Cards */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4f0f9 100%);
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+}
+
 .campgrounds-container {
   padding: 2rem 0;
 }
@@ -56,9 +61,9 @@
 }
 
 .like-button i.text-danger {
-  color: #ff021cff !important; /* Ensure the red color overrides the default white */
+  color: #ff021cff !important;
 }
-/* Rating Badge */
+
 .rating-badge {
   background-color: #f8f9fa;
   padding: 5px 10px;
@@ -66,29 +71,11 @@
   font-weight: 500;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 767.98px) {
-  .campground-img {
-    height: 200px;
-  }
-
-  .row.g-0 {
-    flex-direction: column;
-  }
-}
-
-/* Background Gradient & Base Styles */
-body {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4f0f9 100%);
-  min-height: 100vh;
-}
-
 .campgrounds-container {
   padding: 3rem 0;
   position: relative;
 }
 
-/* Gradient overlay for visual depth */
 .campgrounds-container::before {
   content: "";
   position: fixed;
@@ -104,7 +91,6 @@ body {
   z-index: -1;
 }
 
-/* Card enhancements to stand out against gradient */
 .card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(5px);
@@ -119,7 +105,6 @@ body {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Button styling to match gradient */
 .btn-primary {
   background: linear-gradient(to right, #2575fc, #6a11cb);
   border: none;
@@ -132,14 +117,21 @@ body {
 }
 
 .frosted-glass {
-  background: rgba(33, 37, 41, 0.1);
+  /* background: rgba(33, 37, 41, 0.1); */
   backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(10px);
+  /* -webkit-backdrop-filter: blur(10px); */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Responsive adjustments */
 @media (max-width: 767.98px) {
+  .campground-img {
+    height: 200px;
+  }
+
+  .row.g-4 {
+    flex-direction: column;
+  }
   .campgrounds-container::before {
     height: 20vh;
   }

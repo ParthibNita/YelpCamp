@@ -32,7 +32,7 @@ app.all("*all", (_, __, next) => {
 app.use((err, req, res, __) => {
   const handleUploadError = (message) => {
     req.flash("error", message);
-    res.redirect(req.header("Referer"));
+    res.redirect(req.header("Referer") || "/");
   };
 
   if (err.message === "Invalid_File_Type") {
@@ -59,5 +59,5 @@ connectDB()
   })
   .catch((error) => {
     console.error("Failed to connect to the database:", error);
-    process.exit(1); // Exit the process with failure
+    process.exit(1);
   });

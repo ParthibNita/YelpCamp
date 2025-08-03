@@ -20,12 +20,13 @@
     <div class="stat-card">
       <h5 class="card-title text-center mb-3">Contribution Mix</h5>
       <div class="d-flex justify-content-center align-items-center">
-        <% const totalContributions = campgrounds.length + reviews.length +
-        user.likedCampgrounds.length || 1; %> <% const campPercent =
-        (campgrounds.length / totalContributions) * 100; %> <% const
-        reviewPercent = (reviews.length / totalContributions) * 100; %> <% const
-        likePercent = (user.likedCampgrounds.length / totalContributions) * 100;
-        %>
+        <% const totalContributions = campgrounds.length + reviews.length + user.likedCampgrounds.length %> 
+        <% if(!totalContributions) { %>
+        <p class="text-muted">No contributions yet.</p>
+        <% } else { %>
+        <% const campPercent = (campgrounds.length / totalContributions) * 100; %> 
+        <% const reviewPercent = (reviews.length / totalContributions) * 100; %> 
+        <% const likePercent = (user.likedCampgrounds.length / totalContributions) * 100; %>
         <div
           class="donut-chart"
           style="
@@ -38,6 +39,7 @@
           <li class="mt-2"><span class="legend-dot review"></span> Reviews</li>
           <li class="mt-2"><span class="legend-dot liked"></span> Liked</li>
         </ul>
+        <% } %>
       </div>
     </div>
   </div>
